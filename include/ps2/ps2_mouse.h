@@ -9,7 +9,12 @@ extern "C"
 {
 #endif
 
-// Add code here
+#include <stdint.h>
+#include "ps2_types.h"
+
+int8_t ps2_mouse_init(ps2_object_t *ps2_object);
+int8_t ps2_mouse_set_remote_mode(ps2_object_t *ps2_object);
+int8_t ps2_mouse_read_displacement(ps2_object_t *ps2_object, ps2_displacement_t *displacement);
 
 #ifdef __cplusplus
 }

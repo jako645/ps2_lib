@@ -6,11 +6,11 @@ Library for communication between an embedded MCU and a computer mouse controlle
 
 > Note: There is no plan to support keyboards.
 
-Accuracy target: similar to a normal PC mouse connection. A missed packet is a small skip, the same as on a PC. The library does not try to guarantee lossless delivery.
+Accuracy target: the application chooses the poll rate by how often it reads. Each read returns the movement since the previous read. The mouse counters cover about -256 to 255 counts. Movement beyond that between polls is clipped, and the packet's overflow flags are set. The library reports X and Y from that packet. It does not reconstruct movement the mouse has already lost.
 
 ## Library Scope
 
-**Version 1.** Initialize the mouse and read its default stream. Init is reset (`0xFF`), wait for the self-test reply (`0xAA 0x00`), then enable data reporting (`0xF4`) and wait for ACK (`0xFA`). After that, decode the standard 3-byte packets and expose X and Y. Resolution, sample rate, scroll wheel, and remote mode are out of scope.
+**Version 1.** Talk to a standard mouse in remote mode. Init sends reset (`0xFF`), waits for `0xFA`, the self-test result `0xAA`, and the device ID `0x00`, then sends Set Remote Mode (`0xF0`) and waits for `0xFA`. Read sends Read Data (`0xEB`), waits for `0xFA` and the standard 3-byte packet, and exposes X and Y. Stream mode, resolution, sample rate, and scroll wheel are out of scope.
 
 **STM32 port.** The STM32L476 port uses the STM32 HAL.
 
